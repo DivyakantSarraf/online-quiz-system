@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Browse Quizzes - Quizify</title>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="/css/common.css">
+  <link rel="stylesheet" href="/css/pages/browse.css">
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="navbar">
+    <a href="/index.html" class="nav-brand">
+      <span>⚡</span> Quizify
+    </a>
+    <input type="checkbox" id="nav-toggle" class="nav-toggle-checkbox">
+    <label for="nav-toggle" class="nav-toggle-label">
+      <span></span>
+      <span></span>
+      <span></span>
+    </label>
+    <ul class="nav-links" id="navbar-links">
+      <li><span class="nav-link">Loading...</span></li>
+    </ul>
+  </nav>
+
+  <!-- Main Container -->
+  <main class="container">
+    <div style="margin-bottom: 2rem;">
+      <h1 style="background: var(--grad-primary); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 0.5rem;">Explore Quizzes</h1>
+      <p style="color: var(--text-secondary);">Browse available topics, apply category filters, and test your knowledge.</p>
+    </div>
+
+    <!-- Search Input Bar -->
+    <div class="search-container">
+      <div class="search-input-wrapper">
+        <span>🔍</span>
+        <input type="text" id="search-bar" class="form-control search-input" placeholder="Search by quiz title...">
+      </div>
+    </div>
+
+    <!-- Browse Layout Grid -->
+    <div class="browse-layout">
+      
+      <!-- Sidebar Filters Column -->
+      <aside class="glass-card" style="height: fit-content;">
+        <h2 style="font-family: var(--font-header); margin-bottom: 1.5rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem;">Filters</h2>
+        
+        <!-- Categories Multi-Select Checklist -->
+        <div class="filter-section">
+          <div class="filter-title">Category</div>
+          <div class="checkbox-group" id="category-filter-group">
+            <!-- Dynamic Category List -->
+            <label class="checkbox-label"><input type="checkbox" value="Maths"> Maths</label>
+            <label class="checkbox-label"><input type="checkbox" value="Science"> Science</label>
+            <label class="checkbox-label"><input type="checkbox" value="English"> English</label>
+            <label class="checkbox-label"><input type="checkbox" value="Computer"> Computer</label>
+            <label class="checkbox-label"><input type="checkbox" value="History"> History</label>
+          </div>
+        </div>
+
+        <!-- Difficulty Multi-Select Checklist -->
+        <div class="filter-section">
+          <div class="filter-title">Difficulty</div>
+          <div class="checkbox-group" id="difficulty-filter-group">
+            <label class="checkbox-label"><input type="checkbox" value="Easy"> Easy</label>
+            <label class="checkbox-label"><input type="checkbox" value="Medium"> Medium</label>
+            <label class="checkbox-label"><input type="checkbox" value="Hard"> Hard</label>
+          </div>
+        </div>
+      </aside>
+
+      <!-- Quizzes Grid Column -->
+      <section>
+        <div id="quizzes-grid" class="quizzes-grid">
+          <!-- Dynamically populated cards -->
+          <div class="empty-placeholder" style="grid-column: 1/-1;">
+            <span>📚</span>
+            <p>Loading published quizzes...</p>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+
+
+  <!-- Footer -->
+  <footer>
+    <p>&copy; 2026 Quizify. Built as part of Software Engineering Practical project.</p>
+  </footer>
+
+  <!-- Scripts -->
+  <script type="module" src="/js/pages/browse.js"></script>
+</body>
+</html>

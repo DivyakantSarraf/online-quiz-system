@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard - Quizify</title>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="/css/common.css">
+  <link rel="stylesheet" href="/css/pages/admin.css">
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="navbar">
+    <a href="/index.html" class="nav-brand">
+      <span>⚡</span> Quizify
+    </a>
+    <input type="checkbox" id="nav-toggle" class="nav-toggle-checkbox">
+    <label for="nav-toggle" class="nav-toggle-label">
+      <span></span>
+      <span></span>
+      <span></span>
+    </label>
+    <ul class="nav-links" id="navbar-links">
+      <li><span class="nav-link">Loading...</span></li>
+    </ul>
+  </nav>
+
+  <!-- Main Container -->
+  <main class="container">
+    <div style="margin-bottom: 2rem;">
+      <h1 style="background: var(--grad-primary); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 0.5rem;">Admin Dashboard</h1>
+      <p style="color: var(--text-secondary);">Manage your published quizzes and track real-time student performance.</p>
+    </div>
+
+    <!-- Stats Section -->
+    <div class="stats-grid">
+      <div class="glass-card stat-card">
+        <div class="stat-num" id="stat-quizzes">0</div>
+        <div class="stat-label">Quizzes Created</div>
+      </div>
+      <div class="glass-card stat-card">
+        <div class="stat-num" id="stat-attempts">0</div>
+        <div class="stat-label">Total Attempts</div>
+      </div>
+      <div class="glass-card stat-card">
+        <div class="stat-num" id="stat-avg-score">0%</div>
+        <div class="stat-label">Average Score</div>
+      </div>
+    </div>
+
+    <!-- Main Grid: Quizzes vs. Attempts -->
+    <div class="admin-grid">
+      
+      <!-- Quizzes List -->
+      <section class="glass-card">
+        <div class="card-header-actions">
+          <h2 style="font-family: var(--font-header);">My Quizzes</h2>
+          <a href="/quiz-creator.html" class="btn btn-primary btn-sm">⚡ Create Quiz</a>
+        </div>
+        
+        <div id="quizzes-container">
+          <div class="empty-placeholder">
+            <span>📚</span>
+            <p>You haven't created any quizzes yet.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Student Attempts -->
+      <section class="glass-card">
+        <h2 style="font-family: var(--font-header); margin-bottom: 1.5rem;">Recent Attempts</h2>
+        
+        <div id="attempts-container">
+          <div class="empty-placeholder">
+            <span>📊</span>
+            <p>No student attempt data available yet.</p>
+          </div>
+        </div>
+      </section>
+      
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <p>&copy; 2026 Quizify. Built as part of Software Engineering Practical project.</p>
+  </footer>
+
+  <!-- Scripts -->
+  <script type="module" src="/js/pages/admin.js"></script>
+</body>
+</html>

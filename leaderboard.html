@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quiz Leaderboard - Quizify</title>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet">
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="/css/common.css">
+  <link rel="stylesheet" href="/css/pages/leaderboard.css">
+</head>
+
+<body>
+
+  <!-- Navigation -->
+  <nav class="navbar">
+    <a href="/index.html" class="nav-brand">
+      <span>⚡</span> Quizify
+    </a>
+    <input type="checkbox" id="nav-toggle" class="nav-toggle-checkbox">
+    <label for="nav-toggle" class="nav-toggle-label">
+      <span></span>
+      <span></span>
+      <span></span>
+    </label>
+    <ul class="nav-links" id="navbar-links">
+      <li><span class="nav-link">Loading...</span></li>
+    </ul>
+  </nav>
+
+  <!-- Main Container -->
+  <main class="container" id="leaderboard-main" style="display: none;">
+    <div class="leaderboard-container">
+      
+      <!-- Quiz Header -->
+      <div style="text-align: center; margin-bottom: 2.5rem;">
+        <p style="color: var(--accent-primary); font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; font-size: 0.85rem; margin-bottom: 0.5rem;">Global Standings</p>
+        <h1 id="leaderboard-title"
+          style="background: var(--grad-primary); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 0.5rem; font-size: 2.25rem; display: inline-block;">
+          Quiz Leaderboard
+        </h1>
+        <p id="leaderboard-meta" style="color: var(--text-secondary); font-size: 1rem; font-weight: 500;"></p>
+      </div>
+
+      <!-- Podium Section -->
+      <div id="podium-section" class="podium-container" style="display: none;">
+        <!-- Top 3 columns will be injected here -->
+      </div>
+
+      <!-- Table Section -->
+      <div class="glass-card" style="padding: 1.5rem;">
+        <div class="leaderboard-table-container">
+          <table class="leaderboard-table">
+            <thead>
+              <tr>
+                <th style="width: 80px;">Rank</th>
+                <th>Student</th>
+                <th style="text-align: center;">Score</th>
+                <th style="text-align: center;">Percentage</th>
+                <th style="text-align: center;">Grade</th>
+                <th style="text-align: right;">Date</th>
+              </tr>
+            </thead>
+            <tbody id="leaderboard-tbody">
+              <!-- Attempts will be injected here -->
+            </tbody>
+          </table>
+          
+          <div id="leaderboard-empty" class="empty-state" style="display: none;">
+            <div style="font-size: 3rem; margin-bottom: 1rem;">🏆</div>
+            <p>No attempts recorded for this quiz yet. Be the first to try!</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Action Footer -->
+      <div class="action-footer" style="display: flex; justify-content: center; gap: 1rem; margin-top: 2.5rem;">
+        <a href="/browse.html" class="btn btn-secondary">
+          <span>🔍</span> Back to Browse
+        </a>
+        <a href="#" class="btn btn-outline" id="back-to-results-btn" style="display: none;">
+          <span>📊</span> Back to Results
+        </a>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Loading Placeholder State -->
+  <div id="leaderboard-loading"
+    style="display: flex; justify-content: center; align-items: center; min-height: 60vh; flex-direction: column; gap: 1rem;">
+    <div style="font-size: 3rem; animation: spin 2s linear infinite;">⏳</div>
+    <p style="color: var(--text-secondary);">Loading standings data...</p>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <p>&copy; 2026 Quizify. Built as part of Software Engineering Practical project.</p>
+  </footer>
+
+  <!-- Scripts -->
+  <script type="module" src="/js/pages/leaderboard.js"></script>
+</body>
+
+</html>

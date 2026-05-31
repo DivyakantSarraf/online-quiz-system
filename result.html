@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quiz Results - Quizify</title>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet">
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="/css/common.css">
+  <link rel="stylesheet" href="/css/pages/result.css">
+</head>
+
+<body>
+
+  <!-- Navigation -->
+  <nav class="navbar">
+    <a href="/index.html" class="nav-brand">
+      <span>⚡</span> Quizify
+    </a>
+    <input type="checkbox" id="nav-toggle" class="nav-toggle-checkbox">
+    <label for="nav-toggle" class="nav-toggle-label">
+      <span></span>
+      <span></span>
+      <span></span>
+    </label>
+    <ul class="nav-links" id="navbar-links">
+      <li><span class="nav-link">Loading...</span></li>
+    </ul>
+  </nav>
+
+  <!-- Main Container -->
+  <main class="container" id="result-main" style="display: none;">
+    <div class="result-container">
+      
+      <!-- Quiz Header -->
+      <div style="text-align: center; margin-bottom: 2.5rem;">
+        <p style="color: var(--accent-primary); font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; font-size: 0.85rem; margin-bottom: 0.5rem;">Quiz Completed</p>
+        <h1 id="quiz-title-display"
+          style="background: var(--grad-primary); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 0.5rem; font-size: 2.25rem; display: inline-block;">
+          Quiz Results
+        </h1>
+        <p id="quiz-meta-display" style="color: var(--text-secondary); font-size: 1rem; font-weight: 500;"></p>
+      </div>
+
+      <!-- Stats Grid -->
+      <div class="stats-grid">
+        <div class="stat-card">
+          <span class="stat-label">Score</span>
+          <span class="stat-value" id="score-display">0 / 0</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-label">Percentage</span>
+          <span class="stat-value" id="percentage-display">0%</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-label">Grade</span>
+          <span class="stat-value" id="grade-display">-</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-label">Time Spent</span>
+          <span class="stat-value" id="time-display">00:00</span>
+        </div>
+      </div>
+
+      <!-- Review Section -->
+      <h2 class="review-title">Detailed Review</h2>
+      <div id="review-questions-container">
+        <!-- Question review cards will be injected dynamically -->
+      </div>
+
+      <!-- Action Footer -->
+      <div class="action-footer">
+        <a href="/browse.html" class="btn btn-secondary" id="browse-btn">
+          <span>🔍</span> Back to Browse
+        </a>
+        <a href="#" class="btn btn-primary" id="leaderboard-btn">
+          <span>🏆</span> View Leaderboard
+        </a>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Loading Placeholder State -->
+  <div id="result-loading"
+    style="display: flex; justify-content: center; align-items: center; min-height: 60vh; flex-direction: column; gap: 1rem;">
+    <div style="font-size: 3rem; animation: spin 2s linear infinite;">⏳</div>
+    <p style="color: var(--text-secondary);">Loading attempt results...</p>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <p>&copy; 2026 Quizify. Built as part of Software Engineering Practical project.</p>
+  </footer>
+
+  <!-- Scripts -->
+  <script type="module" src="/js/pages/result.js"></script>
+</body>
+
+</html>

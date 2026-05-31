@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Login - Quizify</title>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="/css/common.css">
+  <link rel="stylesheet" href="/css/pages/auth.css">
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="navbar">
+    <a href="/index.html" class="nav-brand">
+      <span>⚡</span> Quizify
+    </a>
+    <input type="checkbox" id="nav-toggle" class="nav-toggle-checkbox">
+    <label for="nav-toggle" class="nav-toggle-label">
+      <span></span>
+      <span></span>
+      <span></span>
+    </label>
+    <ul class="nav-links" id="navbar-links">
+      <li><a href="/index.html" class="nav-link">Home</a></li>
+      <li><a href="/browse.html" class="nav-link">Browse Quizzes</a></li>
+      <li><a href="/login.html" class="nav-link active">Student Login</a></li>
+      <li><a href="/admin-login.html" class="nav-link">Admin Portal</a></li>
+    </ul>
+  </nav>
+
+  <!-- Content Wrapper -->
+  <div class="auth-wrapper">
+    <div class="auth-container">
+      <div class="glass-card">
+        <div class="auth-header">
+          <h2 class="auth-title">Student Login</h2>
+          <p class="auth-subtitle">Welcome back! Please enter your details</p>
+        </div>
+
+        <!-- Alert Container -->
+        <div id="auth-alert" class="alert alert-danger"></div>
+
+        <!-- Form -->
+        <form id="login-form" novalidate>
+          <div class="form-group">
+            <label for="log-email" class="form-label">Email Address</label>
+            <input type="email" id="log-email" class="form-control" placeholder="name@domain.com" required>
+          </div>
+
+          <div class="form-group">
+            <label for="log-password" class="form-label">Password</label>
+            <input type="password" id="log-password" class="form-control" placeholder="Enter your password" required>
+          </div>
+
+          <button type="submit" class="btn btn-primary auth-action-btn">
+            Log In as Student
+          </button>
+        </form>
+
+        <div class="auth-footer">
+          Don't have an account? <a href="/register.html">Register here</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <p>&copy; 2026 Quizify. Built as part of Software Engineering Practical project.</p>
+  </footer>
+
+  <!-- Scripts -->
+  <script type="module" src="/js/pages/auth-pages.js"></script>
+</body>
+</html>

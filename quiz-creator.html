@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quiz Creator - Quizify</title>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="/css/common.css">
+  <link rel="stylesheet" href="/css/pages/admin.css">
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="navbar">
+    <a href="/index.html" class="nav-brand">
+      <span>⚡</span> Quizify
+    </a>
+    <input type="checkbox" id="nav-toggle" class="nav-toggle-checkbox">
+    <label for="nav-toggle" class="nav-toggle-label">
+      <span></span>
+      <span></span>
+      <span></span>
+    </label>
+    <ul class="nav-links" id="navbar-links">
+      <li><span class="nav-link">Loading...</span></li>
+    </ul>
+  </nav>
+
+  <!-- Main Container -->
+  <main class="container">
+    <div style="margin-bottom: 2rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+      <div>
+        <h1 id="creator-page-title" style="background: var(--grad-primary); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 0.25rem;">Create New Quiz</h1>
+        <p style="color: var(--text-secondary);">Design your quiz settings, questions, and instantly publish or edit.</p>
+      </div>
+      <div>
+        <a href="/admin-dashboard.html" class="btn btn-secondary btn-sm">⬅ Back to Dashboard</a>
+      </div>
+    </div>
+
+    <!-- Creator Layout -->
+    <div class="creator-container">
+      
+      <!-- Left Column: Settings -->
+      <section class="glass-card">
+        <h2 style="font-family: var(--font-header); margin-bottom: 1.5rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem;">Quiz Settings</h2>
+        
+        <form id="quiz-settings-form">
+          <div class="form-group">
+            <label for="quiz-title" class="form-label">Quiz Title</label>
+            <input type="text" id="quiz-title" class="form-control" placeholder="e.g. Intro to JavaScript" required>
+          </div>
+
+          <div class="form-group">
+            <label for="quiz-description" class="form-label">Description</label>
+            <textarea id="quiz-description" class="form-control" rows="3" placeholder="Brief summary of what this quiz covers" required></textarea>
+          </div>
+
+          <div class="form-group">
+            <label for="quiz-category" class="form-label">Category</label>
+            <select id="quiz-category" class="form-control" style="margin-bottom: 0.5rem;">
+              <option value="Maths">Maths</option>
+              <option value="Science">Science</option>
+              <option value="English">English</option>
+              <option value="Computer">Computer</option>
+              <option value="History">History</option>
+              <option value="custom">-- Type Custom Category --</option>
+            </select>
+            <input type="text" id="quiz-category-custom" class="form-control" placeholder="Enter custom category name" style="display: none;">
+          </div>
+
+          <div class="form-group">
+            <label for="quiz-difficulty" class="form-label">Difficulty</label>
+            <select id="quiz-difficulty" class="form-control">
+              <option value="Easy">Easy</option>
+              <option value="Medium" selected>Medium</option>
+              <option value="Hard">Hard</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="quiz-timer" class="form-label">Timer Duration (Minutes)</label>
+            <input type="number" id="quiz-timer" class="form-control" placeholder="e.g. 15 (0 for untimed)" min="0" value="0">
+            <small style="color: var(--text-secondary); margin-top: 0.25rem; display: block;">Leave at 0 to disable the timer.</small>
+          </div>
+
+          <div class="form-group">
+            <label for="quiz-max-attempts" class="form-label">Max Attempts</label>
+            <input type="number" id="quiz-max-attempts" class="form-control" placeholder="Leave empty for unlimited" min="1">
+          </div>
+
+          <div class="form-group">
+            <label for="quiz-password" class="form-label">Access Password (Optional)</label>
+            <input type="password" id="quiz-password" class="form-control" placeholder="Optional gate password">
+          </div>
+
+          <div class="form-group" style="display: flex; align-items: center; gap: 0.75rem; margin-top: 1.5rem;">
+            <input type="checkbox" id="quiz-published" style="width: 20px; height: 20px; cursor: pointer;" checked>
+            <label for="quiz-published" class="form-label" style="margin-bottom: 0; cursor: pointer;">Publish immediately (visible on browse page)</label>
+          </div>
+
+          <button type="submit" id="save-quiz-btn" class="btn btn-primary" style="width: 100%; margin-top: 2rem;">
+            ⚡ Save and Publish Quiz
+          </button>
+        </form>
+      </section>
+
+      <!-- Right Column: Questions Builder -->
+      <section class="glass-card">
+        <div class="questions-list-header">
+          <h2 style="font-family: var(--font-header);">Questions (<span id="question-count">0</span>)</h2>
+          <div style="display: flex; gap: 0.5rem;">
+            <button id="add-mcq-btn" class="btn btn-secondary btn-sm">➕ MCQ</button>
+            <button id="add-tf-btn" class="btn btn-secondary btn-sm">➕ True/False</button>
+            <button id="add-multi-btn" class="btn btn-secondary btn-sm">➕ Multi-Correct</button>
+          </div>
+        </div>
+
+        <!-- Dynamic Questions Container -->
+        <div id="questions-container">
+          <div class="empty-placeholder" id="no-questions-placeholder">
+            <span>📝</span>
+            <p>Click one of the buttons above to add your first question.</p>
+          </div>
+        </div>
+      </section>
+      
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <p>&copy; 2026 Quizify. Built as part of Software Engineering Practical project.</p>
+  </footer>
+
+  <!-- Scripts -->
+  <script type="module" src="/js/pages/creator.js"></script>
+</body>
+</html>
