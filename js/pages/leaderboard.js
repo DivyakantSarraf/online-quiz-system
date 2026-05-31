@@ -83,13 +83,62 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   } catch (error) {
     console.error("Error loading leaderboard details:", error);
-    document.getElementById("leaderboard-loading").innerHTML = `
-      <div style="font-size: 3rem;">❌</div>
-      <p style="color: var(--color-danger); font-weight:600;">Failed to load leaderboard: ${error.message}</p>
-      <a href="/browse.html" class="btn btn-secondary btn-sm" style="margin-top: 1rem;">Back to Browse</a>
-    `;
+    const loadingEl = document.getElementById("leaderboard-loading");
+    if (loadingEl) {
+      loadingEl.innerHTML = "";
+      const icon = document.createElement("div");
+      icon.style.fontSize = "3rem";
+      icon.textContent = "❌";
+      loadingEl.appendChild(icon);
+
+      const msg = document.createElement("p");
+      msg.style.color = "var(--color-danger)";
+      msg.style.fontWeight = "600";
+      msg.textContent = `Failed to load leaderboard: ${error.message}`;
+      loadingEl.appendChild(msg);
+
+      const btn = document.createElement("a");
+      btn.href = "/browse.html";
+      btn.className = "btn btn-secondary btn-sm";
+      btn.style.marginTop = "1rem";
+      btn.textContent = "Back to Browse";
+      loadingEl.appendChild(btn);
+    }
   }
 });
+
+function createPodiumCol(rank, student) {
+  const col = document.createElement("div");
+  col.className = `podium-col ${rank}`;
+
+  const medal = document.createElement("div");
+  medal.className = "podium-medal";
+  medal.textContent = rank === "first" ? "🥇" : rank === "second" ? "🥈" : "🥉";
+  col.appendChild(medal);
+
+  const avatar = document.createElement("div");
+  avatar.className = "podium-avatar";
+  avatar.textContent = rank === "first" ? "👑" : "👤";
+  col.appendChild(avatar);
+
+  const name = document.createElement("div");
+  name.className = "podium-name";
+  name.title = student.studentName;
+  name.textContent = student.studentName;
+  col.appendChild(name);
+
+  const score = document.createElement("div");
+  score.className = "podium-score";
+  score.textContent = `${student.score} / ${student.totalQuestions}`;
+  col.appendChild(score);
+
+  const percentage = document.createElement("div");
+  percentage.className = "podium-percentage";
+  percentage.textContent = `${student.percentage}%`;
+  col.appendChild(percentage);
+
+  return col;
+}
 
 function renderLeaderboard(attempts) {
   const podiumSection = document.getElementById("podium-section");
@@ -108,68 +157,76 @@ function renderLeaderboard(attempts) {
 
   emptyEl.style.display = "none";
   podiumSection.style.display = "flex";
+  podiumSection.innerHTML = "";
 
   // Podium (Top 3)
-  const firstPlace = attempts[0];
-  const secondPlace = attempts[1];
-  const thirdPlace = attempts[2];
+  const firstPlace = attempts.at(0);
+  const secondPlace = attempts.at(1);
+  const thirdPlace = attempts.at(2);
 
-  let podiumHTML = "";
   if (secondPlace) {
-    podiumHTML += `
-      <div class="podium-col second">
-        <div class="podium-medal">🥈</div>
-        <div class="podium-avatar">👤</div>
-        <div class="podium-name" title="${escapeHtml(secondPlace.studentName)}">${escapeHtml(secondPlace.studentName)}</div>
-        <div class="podium-score">${secondPlace.score} / ${secondPlace.totalQuestions}</div>
-        <div class="podium-percentage">${secondPlace.percentage}%</div>
-      </div>
-    `;
+    podiumSection.appendChild(createPodiumCol("second", secondPlace));
   }
   if (firstPlace) {
-    podiumHTML += `
-      <div class="podium-col first">
-        <div class="podium-medal">🥇</div>
-        <div class="podium-avatar">👑</div>
-        <div class="podium-name" title="${escapeHtml(firstPlace.studentName)}">${escapeHtml(firstPlace.studentName)}</div>
-        <div class="podium-score">${firstPlace.score} / ${firstPlace.totalQuestions}</div>
-        <div class="podium-percentage">${firstPlace.percentage}%</div>
-      </div>
-    `;
+    podiumSection.appendChild(createPodiumCol("first", firstPlace));
   }
   if (thirdPlace) {
-    podiumHTML += `
-      <div class="podium-col third">
-        <div class="podium-medal">🥉</div>
-        <div class="podium-avatar">👤</div>
-        <div class="podium-name" title="${escapeHtml(thirdPlace.studentName)}">${escapeHtml(thirdPlace.studentName)}</div>
-        <div class="podium-score">${thirdPlace.score} / ${thirdPlace.totalQuestions}</div>
-        <div class="podium-percentage">${thirdPlace.percentage}%</div>
-      </div>
-    `;
+    podiumSection.appendChild(createPodiumCol("third", thirdPlace));
   }
-
-  podiumSection.innerHTML = podiumHTML;
 
   // Remaining list table
   tbody.innerHTML = "";
   if (attempts.length > 3) {
     if (tableCard) tableCard.style.display = "block";
     tableEl.style.display = "table";
-    for (let i = 3; i < attempts.length; i++) {
-      const att = attempts[i];
+
+    attempts.slice(3).forEach((att, index) => {
+      const rankNum = index + 4;
       const dateStr = formatDate(att.timestamp);
+      
       const row = document.createElement("tr");
-      row.innerHTML = `
-        <td><span class="table-rank-badge">${i + 1}</span></td>
-        <td style="font-weight: 600;">${escapeHtml(att.studentName)}</td>
-        <td style="text-align: center;">${att.score} / ${att.totalQuestions}</td>
-        <td style="text-align: center; font-weight: 700; color: var(--accent-primary);">${att.percentage}%</td>
-        <td style="text-align: center;"><span class="badge badge-custom">${att.grade}</span></td>
-        <td style="text-align: right; color: var(--text-secondary); font-size: 0.9rem;">${dateStr}</td>
-      `;
+
+      const tdRank = document.createElement("td");
+      const rankBadge = document.createElement("span");
+      rankBadge.className = "table-rank-badge";
+      rankBadge.textContent = rankNum.toString();
+      tdRank.appendChild(rankBadge);
+      row.appendChild(tdRank);
+
+      const tdName = document.createElement("td");
+      tdName.style.fontWeight = "600";
+      tdName.textContent = att.studentName;
+      row.appendChild(tdName);
+
+      const tdScore = document.createElement("td");
+      tdScore.style.textAlign = "center";
+      tdScore.textContent = `${att.score} / ${att.totalQuestions}`;
+      row.appendChild(tdScore);
+
+      const tdPct = document.createElement("td");
+      tdPct.style.textAlign = "center";
+      tdPct.style.fontWeight = "700";
+      tdPct.style.color = "var(--accent-primary)";
+      tdPct.textContent = `${att.percentage}%`;
+      row.appendChild(tdPct);
+
+      const tdGrade = document.createElement("td");
+      tdGrade.style.textAlign = "center";
+      const gradeBadge = document.createElement("span");
+      gradeBadge.className = "badge badge-custom";
+      gradeBadge.textContent = att.grade;
+      tdGrade.appendChild(gradeBadge);
+      row.appendChild(tdGrade);
+
+      const tdDate = document.createElement("td");
+      tdDate.style.textAlign = "right";
+      tdDate.style.color = "var(--text-secondary)";
+      tdDate.style.fontSize = "0.9rem";
+      tdDate.textContent = dateStr;
+      row.appendChild(tdDate);
+
       tbody.appendChild(row);
-    }
+    });
   } else {
     if (tableCard) tableCard.style.display = "none";
   }

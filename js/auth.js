@@ -49,21 +49,22 @@ function getActiveUserSync() {
  */
 export async function signUpStudent(email, password, displayName) {
   if (isMock) {
-    const users = JSON.parse(localStorage.getItem("mock_users") || "{}");
-    if (users[email.toLowerCase()]) {
+    const usersMap = new Map(Object.entries(JSON.parse(localStorage.getItem("mock_users") || "{}")));
+    const key = email.toLowerCase();
+    if (usersMap.has(key)) {
       throw new Error("Email already registered.");
     }
     const uid = "student-" + Math.random().toString(36).substr(2, 9);
     const newUser = {
       uid,
-      email: email.toLowerCase(),
+      email: key,
       displayName,
       role: "student",
       password,
       createdAt: new Date().toISOString()
     };
-    users[email.toLowerCase()] = newUser;
-    localStorage.setItem("mock_users", JSON.stringify(users));
+    usersMap.set(key, newUser);
+    localStorage.setItem("mock_users", JSON.stringify(Object.fromEntries(usersMap)));
     localStorage.setItem("mock_current_user", JSON.stringify(newUser));
     notifyMockListeners();
     return newUser;
@@ -94,21 +95,22 @@ export async function signUpAdmin(email, password, displayName, secretCode) {
   }
 
   if (isMock) {
-    const users = JSON.parse(localStorage.getItem("mock_users") || "{}");
-    if (users[email.toLowerCase()]) {
+    const usersMap = new Map(Object.entries(JSON.parse(localStorage.getItem("mock_users") || "{}")));
+    const key = email.toLowerCase();
+    if (usersMap.has(key)) {
       throw new Error("Email already registered.");
     }
     const uid = "admin-" + Math.random().toString(36).substr(2, 9);
     const newUser = {
       uid,
-      email: email.toLowerCase(),
+      email: key,
       displayName,
       role: "admin",
       password,
       createdAt: new Date().toISOString()
     };
-    users[email.toLowerCase()] = newUser;
-    localStorage.setItem("mock_users", JSON.stringify(users));
+    usersMap.set(key, newUser);
+    localStorage.setItem("mock_users", JSON.stringify(Object.fromEntries(usersMap)));
     localStorage.setItem("mock_current_user", JSON.stringify(newUser));
     notifyMockListeners();
     return newUser;
@@ -133,8 +135,9 @@ export async function signUpAdmin(email, password, displayName, secretCode) {
  */
 export async function loginUser(email, password, expectedRole = "student") {
   if (isMock) {
-    const users = JSON.parse(localStorage.getItem("mock_users") || "{}");
-    const user = users[email.toLowerCase()];
+    const usersMap = new Map(Object.entries(JSON.parse(localStorage.getItem("mock_users") || "{}")));
+    const key = email.toLowerCase();
+    const user = usersMap.get(key);
     if (!user || user.password !== password) {
       throw new Error("Invalid email or password.");
     }
@@ -301,46 +304,92 @@ export function initNavbar() {
   if (!navbarLinks) return;
 
   onAuthChanged((user) => {
-    let html = `<li><a href="/index.html" class="nav-link">Home</a></li>`;
-    
-    // Determine active page
+    navbarLinks.innerHTML = "";
+
     const currentPage = window.location.pathname.split("/").pop() || "index.html";
-    const isActive = (page) => currentPage === page ? "active" : "";
+    const isActive = (page) => currentPage === page ? "nav-link active" : "nav-link";
+
+    // Home Link
+    const homeLi = document.createElement("li");
+    const homeA = document.createElement("a");
+    homeA.href = "/index.html";
+    homeA.className = isActive("index.html");
+    homeA.textContent = "Home";
+    homeLi.appendChild(homeA);
+    navbarLinks.appendChild(homeLi);
 
     if (user) {
       if (user.role === "admin") {
-        html += `
-          <li><a href="/admin-dashboard.html" class="nav-link ${isActive("admin-dashboard.html")}">Dashboard</a></li>
-          <li><a href="/quiz-creator.html" class="nav-link ${isActive("quiz-creator.html")}">Create Quiz</a></li>
-          <li><span class="nav-link" style="color: var(--text-primary); cursor: default;">Admin: ${user.displayName || user.email}</span></li>
-          <li><button class="btn btn-sm btn-secondary" id="logout-btn">Logout</button></li>
-        `;
-      } else {
-        html += `
-          <li><a href="/browse.html" class="nav-link ${isActive("browse.html")}">Browse Quizzes</a></li>
-          <li><a href="/profile.html" class="nav-link ${isActive("profile.html")}">My Profile</a></li>
-          <li><span class="nav-link" style="color: var(--text-primary); cursor: default;">Hi, ${user.displayName}</span></li>
-          <li><button class="btn btn-sm btn-secondary" id="logout-btn">Logout</button></li>
-        `;
-      }
-    } else {
-      html += `
-        <li><a href="/browse.html" class="nav-link ${isActive("browse.html")}">Browse Quizzes</a></li>
-        <li><a href="/login.html" class="nav-link ${isActive("login.html")}">Student Login</a></li>
-        <li><a href="/admin-login.html" class="nav-link ${isActive("admin-login.html")}">Admin Portal</a></li>
-      `;
-    }
-    
-    navbarLinks.innerHTML = html;
+        // Dashboard Link
+        const dashLi = document.createElement("li");
+        const dashA = document.createElement("a");
+        dashA.href = "/admin-dashboard.html";
+        dashA.className = isActive("admin-dashboard.html");
+        dashA.textContent = "Dashboard";
+        dashLi.appendChild(dashA);
+        navbarLinks.appendChild(dashLi);
 
-    // Attach logout event
-    const logoutBtn = document.getElementById("logout-btn");
-    if (logoutBtn) {
+        // Create Quiz Link
+        const createLi = document.createElement("li");
+        const createA = document.createElement("a");
+        createA.href = "/quiz-creator.html";
+        createA.className = isActive("quiz-creator.html");
+        createA.textContent = "Create Quiz";
+        createLi.appendChild(createA);
+        navbarLinks.appendChild(createLi);
+
+        // Admin Info Span
+        const infoLi = document.createElement("li");
+        const infoSpan = document.createElement("span");
+        infoSpan.className = "nav-link";
+        infoSpan.style.color = "var(--text-primary)";
+        infoSpan.style.cursor = "default";
+        infoSpan.textContent = `Admin: ${user.displayName || user.email}`;
+        infoLi.appendChild(infoSpan);
+        navbarLinks.appendChild(infoLi);
+      } else {
+        // Browse Quizzes Link
+        const browseLi = document.createElement("li");
+        const browseA = document.createElement("a");
+        browseA.href = "/browse.html";
+        browseA.className = isActive("browse.html");
+        browseA.textContent = "Browse Quizzes";
+        browseLi.appendChild(browseA);
+        navbarLinks.appendChild(browseLi);
+
+        // Profile Link
+        const profileLi = document.createElement("li");
+        const profileA = document.createElement("a");
+        profileA.href = "/profile.html";
+        profileA.className = isActive("profile.html");
+        profileA.textContent = "My Profile";
+        profileLi.appendChild(profileA);
+        navbarLinks.appendChild(profileLi);
+
+        // Student Info Span
+        const infoLi = document.createElement("li");
+        const infoSpan = document.createElement("span");
+        infoSpan.className = "nav-link";
+        infoSpan.style.color = "var(--text-primary)";
+        infoSpan.style.cursor = "default";
+        infoSpan.textContent = `Hi, ${user.displayName}`;
+        infoLi.appendChild(infoSpan);
+        navbarLinks.appendChild(infoLi);
+      }
+
+      // Logout Button
+      const logoutLi = document.createElement("li");
+      const logoutBtn = document.createElement("button");
+      logoutBtn.className = "btn btn-sm btn-secondary";
+      logoutBtn.id = "logout-btn";
+      logoutBtn.textContent = "Logout";
+      logoutLi.appendChild(logoutBtn);
+      navbarLinks.appendChild(logoutLi);
+
       logoutBtn.addEventListener("click", async () => {
         try {
-          const userRole = user ? user.role : null;
+          const userRole = user.role;
           await logoutUser();
-          
           if (userRole === "admin") {
             window.location.href = "/admin-login.html";
           } else {
@@ -350,6 +399,33 @@ export function initNavbar() {
           import("./utils.js").then((m) => m.showToast(error.message, "error"));
         }
       });
+    } else {
+      // Browse Quizzes Link
+      const browseLi = document.createElement("li");
+      const browseA = document.createElement("a");
+      browseA.href = "/browse.html";
+      browseA.className = isActive("browse.html");
+      browseA.textContent = "Browse Quizzes";
+      browseLi.appendChild(browseA);
+      navbarLinks.appendChild(browseLi);
+
+      // Student Login Link
+      const loginLi = document.createElement("li");
+      const loginA = document.createElement("a");
+      loginA.href = "/login.html";
+      loginA.className = isActive("login.html");
+      loginA.textContent = "Student Login";
+      loginLi.appendChild(loginA);
+      navbarLinks.appendChild(loginLi);
+
+      // Admin Login Link
+      const adminLi = document.createElement("li");
+      const adminA = document.createElement("a");
+      adminA.href = "/admin-login.html";
+      adminA.className = isActive("admin-login.html");
+      adminA.textContent = "Admin Portal";
+      adminLi.appendChild(adminA);
+      navbarLinks.appendChild(adminLi);
     }
   });
 }
