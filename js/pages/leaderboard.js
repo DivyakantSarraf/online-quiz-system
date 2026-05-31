@@ -96,16 +96,18 @@ function renderLeaderboard(attempts) {
   const tbody = document.getElementById("leaderboard-tbody");
   const emptyEl = document.getElementById("leaderboard-empty");
   const tableEl = document.querySelector(".leaderboard-table");
+  const tableCard = document.getElementById("ranked-table-card");
 
   if (attempts.length === 0) {
     emptyEl.style.display = "block";
     tableEl.style.display = "none";
     podiumSection.style.display = "none";
+    if (tableCard) tableCard.style.display = "block";
     return;
   }
 
   emptyEl.style.display = "none";
-  tableEl.style.display = "table";
+  podiumSection.style.display = "flex";
 
   // Podium (Top 3)
   const firstPlace = attempts[0];
@@ -148,11 +150,12 @@ function renderLeaderboard(attempts) {
   }
 
   podiumSection.innerHTML = podiumHTML;
-  podiumSection.style.display = "flex";
 
   // Remaining list table
   tbody.innerHTML = "";
   if (attempts.length > 3) {
+    if (tableCard) tableCard.style.display = "block";
+    tableEl.style.display = "table";
     for (let i = 3; i < attempts.length; i++) {
       const att = attempts[i];
       const dateStr = formatDate(att.timestamp);
@@ -167,6 +170,8 @@ function renderLeaderboard(attempts) {
       `;
       tbody.appendChild(row);
     }
+  } else {
+    if (tableCard) tableCard.style.display = "none";
   }
 }
 
